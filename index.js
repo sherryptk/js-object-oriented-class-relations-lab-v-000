@@ -16,16 +16,12 @@ class Driver {
     })
   }
 
-  // passengers(){
-  //   return store.trips.filter(trip => {
-  //     return trip.passengerId === this.id
-  //   })
-  // }
-
   passengers(){
-    const trips = this.trips()
-
+    return this.trips().map(trip => {
+      return trip.passenger()
+    })
   }
+
 }
 
 let passengerId = 0
@@ -38,10 +34,17 @@ class Passenger {
     store.passengers.push(this)
   }
 
-  // trips(){
-  //   return driver.trips.filter(function(trip){
-  //     return trip.id === this.driverId
-  //   })
+  trips(){
+    return store.trips.filter((trip) => {
+      return trip.passengerId === this.id
+    })
+  }
+
+  drivers(){
+    return this.trips().map((trip) => {
+      return trip.driver()
+    })
+  }
 }
 
 let tripId = 0
@@ -51,25 +54,20 @@ class Trip {
     this.id = ++tripId
     if (driver){
     this.driverId = driver.id
-  }
+    }
     if(passenger){
     this.passengerId = passenger.id
-}
+  }
 
     store.trips.push(this)
   }
 
-  setPassenger(passenger){
-   this.passengerId = passenger.id
- }
-
-  setDriver(driver){
-    this.driverId = driver.id
+  driver(){
+    return store.drivers.find((driver) => this.driverId === driver.id);
   }
 
-driver(){
-  return store.drivers.find(function(driver){
-    return driver.id === this.driverId
-  })
-}
+  passenger(){
+    return store.passengers.find((passenger) => this.passengerId === passenger.id);
+  }
+
 }
